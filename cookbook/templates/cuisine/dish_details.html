@@ -1,0 +1,35 @@
+
+{% extends 'base/base.html'%}
+{% load static %}
+{% load crispy_forms_tags %} 
+{% block content %}
+
+
+<main class="single-page-tubers">
+
+    <section class="images container text-center">  
+      <img src="{{ select_items.photo.url }}" class="img-fluid" alt="team-member">
+      <h1>{{select_items.dish_name}}</h1>
+    </section>
+      <section class="descritpion container">
+        <h4>Descritpion</h4>
+        <p class="mt-2 mb-2">{{select_items.description | safe }}</p>
+      </section>      
+<br><br>
+<h1> comment ... </h1>
+<section class="user comment  mt-5 mb-5">
+      <div class="row">
+        <form  method="POST" class="col-md-8 offset-md-2">
+         
+          <div class="form-group pt-2">
+            <textarea name="content" class="form-control" rows="3" placeholder="do comments "></textarea>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-accent">Comment</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+{% endblock %}
