@@ -9,6 +9,7 @@ urlpatterns = [
    path('search',views.search,name="search"),
    path('add_dishes',views.add_dishes,name="add_dishes"),
    path('<int:id>',views.dish_details,name="dish_details"),
+   path('about',views.about,name="about"), 
    #path('<int:id>',views.favorite_add,name="favorite_add"),
    #path('favorite_list',views.favorite_list,name="favorite_list"),
    #path('<int:id>',views.post_detailview,name="post_detailview") ,

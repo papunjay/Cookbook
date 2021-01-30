@@ -2,9 +2,29 @@
 {% extends 'base/base.html'%}
 {% load static %}
 {% block content %}
-<br><br>
+
 <main class="home">
-    <section class="container d-flex justify-content-center align-items-center mt-4">
+<br>
+ <section class="searchbox container mt-10 ">
+  <form method="GET" action="{% url 'search' %}">
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <select name="type_of_cuisine" class="form-control">
+          <option selected disabled hidden>Select Your Favorite Cuisine</option>
+          {% for type_of_cuisine in select_cuisine %}
+            <option value="{{type_of_cuisine}}">{{type_of_cuisine}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="text-left">
+      <button class="btn btn-light">Search</button>
+    </div>
+  </form>  
+</section>
+
+
+   <section class="container d-flex justify-content-center align-items-center mt-4">
       <form method="GET" action="{% url 'search' %}" class="row text-center">
         <div class="col-md-auto">
           <div class="form-group mb-2">
@@ -24,7 +44,7 @@
         {% for food in all_dishes %}
         <div class="card border-0 text-center  ml-3 mr-3">
          
-            <img src="{{food.photo.url}}" class="card-img-top" alt="team-member">
+            <img src="{{food.photo.url}}" class="card-img-top" alt="cookbook">
     
           <div class="card-body">
             <h5 class="card-title">Cuisine:{{ food.type_of_cuisine}}</h5>
@@ -42,9 +62,9 @@
       <br>
       <br>
     </section> 
-
+    <h2 class="text-center">All Dishes</h2>
+    <br>
     <section class="search-results container mt-3 grid">
-      <!-- person 1 -->
       {% for food in all_dishes %}
         <div class="card border-0 text-center  ml-3 mr-3">
           <a href="{% url 'dish_details'  food.id %}">
@@ -58,7 +78,6 @@
           </div>
         </div>
         {% endfor %}
-     
       </section>
   </main>
 {% endblock %}

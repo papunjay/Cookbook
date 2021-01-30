@@ -15,8 +15,10 @@ from django.urls import reverse
 
 def home(request):
     all_dishes =  cookbook_dishes.objects.order_by('-created_date')
+    select_cuisine=cookbook_dishes.objects.values_list('type_of_cuisine',flat=True).distinct()
     data={
         'all_dishes': all_dishes,
+        'select_cuisine':select_cuisine,
     }
     return render(request,'cuisine/home.html',data)
     
@@ -28,6 +30,11 @@ def search(request):
         keyword=request.GET['keyword']
         if keyword:
             search_data=search_data.filter(dish_name__icontains=keyword)
+
+    if 'type_of_cuisine' in request.GET:
+        type_of_cuisine =request.GET['type_of_cuisine']
+        if  type_of_cuisine:
+            search_data=search_data.filter(type_of_cuisine__iexact=type_of_cuisine)
 
     data={
       'search_data':search_data,
@@ -56,18 +63,19 @@ def add_dishes(request):
         url=fs.url(filename)
         description=request.POST['description']
         cook_time=request.POST['cook_time']
-        dishes=cookbook_dishes.objects.create(
-            dish_name=dish_name,
-            type_of_cuisine=type_of_cuisine,
-            photo=url,
-            description=description,
-            cook_time=cook_time)
+        dishes=cookbook_dishes.objects.create( dish_name=dish_name,type_of_cuisine=type_of_cuisine,photo=url,description=description,cook_time=cook_time)
         dishes.save()
         return render(request,'cuisine/add_dishes.html')
+    
     data={
         'select_cuisine':select_cuisine
     }
     return render(request,'cuisine/add_dishes.html',data)
+
+
+def about(request):
+    return render(request,'cuisine/about.html')
+
 
 
 @login_required

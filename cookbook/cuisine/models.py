@@ -23,7 +23,7 @@ class cookbook_dishes(models.Model):
 
     dish_name=models.CharField(max_length=255)
     type_of_cuisine=models.CharField(choices=cuisine_choices, max_length=255)
-    photo=models.ImageField(upload_to='media/dishes/%Y/%m')
+    photo=models.ImageField(upload_to='media/%Y/%m')
     description=RichTextField()
     cook_time=models.IntegerField()
     favorited=models.ManyToManyField(User,default=None,blank=True,related_name="favorited")
