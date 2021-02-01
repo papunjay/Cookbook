@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import  cookbook_dishes,dish_Comment,favorite
+from .models import  cookbook_dishes,dish_Comment
 from django.shortcuts import get_object_or_404
 from .forms import CommentForm 
 from django.core.files.storage import FileSystemStorage
@@ -9,19 +9,17 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
-
-
 # # Create your views here.
 
 def home(request):
     all_dishes =  cookbook_dishes.objects.order_by('-created_date')
     select_cuisine=cookbook_dishes.objects.values_list('type_of_cuisine',flat=True).distinct()
     data={
+
         'all_dishes': all_dishes,
         'select_cuisine':select_cuisine,
     }
-    return render(request,'cuisine/home.html',data)
-    
+    return render(request,'cuisine/home.html',data)    
 def search(request):
     search_data = cookbook_dishes.objects.order_by('-created_date')
     #cuisine_select = cookbook_dishes.objects.values_list('type_of_cuisine',flat=True).distinct()
@@ -44,16 +42,23 @@ def search(request):
 
 def dish_details(request,id):
     select_items=get_object_or_404(cookbook_dishes,pk=id)
-
+    cook_book=get_object_or_404(cookbook_dishes,pk=id)
+    count_like=cook_book.dish_like.count()
+    is_favourite=False
+    if cook_book.favourite.filter(id=request.user.id).exists():
+        is_favourite=True
+    
     data={
 
-        'select_items':select_items,
+        'select_items' : select_items,
+        'is_favourite' : is_favourite,
+        'count_like'   :  count_like,
     }
     return render(request,'cuisine/dish_details.html',data)
     
 @login_required
 def add_dishes(request):
-    select_cuisine=cookbook_dishes.objects.values_list('type_of_cuisine',flat=True)
+    select_cuisine=cookbook_dishes.objects.values_list('type_of_cuisine',flat=True).distinct()
     if request.method =='POST' and request.FILES['myfile']:
         dish_name=request.POST['dish_name']
         type_of_cuisine=request.POST['type_of_cuisine']
@@ -79,11 +84,25 @@ def about(request):
 
 
 @login_required
-def favorite_add(request,id):
-    cook_book=get_object_or_404(cookbook_dishes,id=id)
-    if cook_book.favorited.filter(id=request.user.id).exists():
-        cook_book.favorited.remove(request.user)
-
+def add_favourite(request,id):
+    #cook_book=get_object_or_404(cookbook_dishes,id=id)
+    cook_book_obj= cookbook_dishes.objects.get(pk=id)
+    
+    if cook_book.favourite.filter(id=request.user.id).exists():
+        cook_book.favourite.remove(request.user)
+        cook_book,save()
     else:
-        cook_book.favorited.add(request.user)
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        cook_book_obj.favourite.add_field(request.user)
+        cook_book_obj.save()
+
+    return HttpResponseRedirect(reverse('dish_details',args=[str(id)] ))
+
+
+@login_required
+def dish_like(request,id):
+
+    cook_book_obj= cookbook_dishes.objects.get(pk=id)
+    cook_book_obj.dish_like.add(request.user)
+    cook_book_obj.save()
+
+    return HttpResponseRedirect(reverse('dish_details',args=[str(id)] ))

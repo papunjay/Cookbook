@@ -68,7 +68,7 @@
       {% for food in all_dishes %}
         <div class="card border-0 text-center  ml-3 mr-3">
           <a href="{% url 'dish_details'  food.id %}">
-          <img src="{{food.photo.url}}" class="card-img-top" alt="team-member">
+          <img src="{{food.photo.url}}" class="card-img-top" alt="pic not found">
           </a>
           <div class="card-body">
             <h5 class="card-title">Cuisine:{{food.type_of_cuisine}}</h5>
