@@ -58,3 +58,23 @@ def dish_details(request,id):
     }
     return render(request,'cuisine/dish_details.html',data)
     
+@login_required
+def add_dishes(request):
+    select_cuisine=cookbook_dishes.objects.values_list('type_of_cuisine',flat=True).distinct()
+    if request.method =='POST' and request.FILES['myfile']:
+        dish_name=request.POST['dish_name']
+        type_of_cuisine=request.POST['type_of_cuisine']
+        myfile = request.FILES.get('myfile')
+        fs=FileSystemStorage()
+        filename=fs.save(myfile.name,myfile)
+        url=fs.url(filename)
+        description=request.POST['description']
+        cook_time=request.POST['cook_time']
+        dishes=cookbook_dishes.objects.create( dish_name=dish_name,type_of_cuisine=type_of_cuisine,photo=url,description=description,cook_time=cook_time)
+        dishes.save()
+        return render(request,'cuisine/add_dishes.html')
+    
+    data={
+        'select_cuisine':select_cuisine
+    }
+    return render(request,'cuisine/add_dishes.html',data)
