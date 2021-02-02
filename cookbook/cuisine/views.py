@@ -97,6 +97,15 @@ def add_favourite(request,id):
     return HttpResponseRedirect(reverse('dish_details',args=[str(id)] ))
 
 
+
+
+
+def about(request):
+    return render(request,'cuisine/about.html')
+
+
+
+
 @login_required
 def dish_like(request,id):
 
