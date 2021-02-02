@@ -8,6 +8,20 @@ from django.contrib.auth import logout
 
 # Create your views here.
 
+def login(request):
+    if request.method=="POST":
+        username=request.POST['username']
+        password=request.POST['password']
+
+        user = auth.authenticate(username=username,password=password)
+        if user is not None:
+            auth.login(request,user)
+            messages.success(request,"you are successfully login")
+            return redirect('home')
+        else:
+            messages.error(request,"wrong password")
+            return redirect('login')
+    return render(request,'accounts/login.html')
 
 
 
