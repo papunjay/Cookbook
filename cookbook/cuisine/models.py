@@ -46,4 +46,16 @@ class cookbook_dishes(models.Model):
 
     #def get_absolute_url(self):
     #    return reverse('dish_details',args[self.id,self.slug])
-        
+
+
+class dish_Comment(models.Model):
+    cook_dishes=models.ForeignKey(cookbook_dishes,on_delete=models.CASCADE,related_name='comments')
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    userName=models.CharField(max_length=255)
+    content=models.TextField()
+    
+    #created=models.DateTimeField(default=False)
+    created_date=models.DateTimeField(default=datetime.now,blank=True)
+
+    def __str__(self):
+        return self.content
