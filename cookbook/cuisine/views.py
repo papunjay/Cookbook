@@ -78,3 +78,21 @@ def add_dishes(request):
         'select_cuisine':select_cuisine
     }
     return render(request,'cuisine/add_dishes.html',data)
+
+
+
+
+@login_required
+def add_favourite(request,id):
+    #cook_book=get_object_or_404(cookbook_dishes,id=id)
+    cook_book_obj= cookbook_dishes.objects.get(pk=id)
+    
+    if cook_book.favourite.filter(id=request.user.id).exists():
+        cook_book.favourite.remove(request.user)
+        cook_book,save()
+    else:
+        cook_book_obj.favourite.add_field(request.user)
+        cook_book_obj.save()
+
+    return HttpResponseRedirect(reverse('dish_details',args=[str(id)] ))
+
