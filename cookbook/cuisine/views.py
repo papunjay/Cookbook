@@ -96,3 +96,12 @@ def add_favourite(request,id):
 
     return HttpResponseRedirect(reverse('dish_details',args=[str(id)] ))
 
+
+@login_required
+def dish_like(request,id):
+
+    cook_book_obj= cookbook_dishes.objects.get(pk=id)
+    cook_book_obj.dish_like.add(request.user)
+    cook_book_obj.save()
+
+    return HttpResponseRedirect(reverse('dish_details',args=[str(id)] ))
