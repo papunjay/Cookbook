@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import  cookbook_dishes,dish_Comment
 from django.shortcuts import get_object_or_404
-from .forms import CommentForm 
+#from .forms import CommentForm 
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth import login
 from django.contrib.auth.models import User
@@ -18,7 +18,7 @@ def home(request):
         'all_dishes': all_dishes,
         'select_cuisine':select_cuisine,
     }
-
+    return render(request,'cuisine/home.html',data)    
    
 def search(request):
     search_data = cookbook_dishes.objects.order_by('-created_date')

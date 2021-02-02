@@ -29,7 +29,7 @@ SECRET_KEY = 'k0y-$icv($z6v=t18v0obt#f(0#)xeslq=s35gk+61x6y@32j@'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+LOGIN_REDIRECT_URL = 'home' #new aouth
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,9 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
-    'cuisine',
-  
+    'accounts', #new
+    'django.contrib.sites', #new
+    'allauth', #new
+    'allauth.account', #new
+    'allauth.socialaccount', #new
+    'allauth.socialaccount.providers.google', #new
+    'allauth.socialaccount.providers.facebook',#new
+    'cuisine',#new
+    'ckeditor', #new
+    'crispy_forms'#new
 
 ]
 
