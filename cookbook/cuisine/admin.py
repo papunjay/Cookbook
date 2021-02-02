@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+# Register your model
+
 
 from .models import cookbook_dishes,dish_Comment
 # Register your models here.
