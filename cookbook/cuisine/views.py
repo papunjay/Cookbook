@@ -39,3 +39,22 @@ def search(request):
       #'cuisine_select':cuisine_select,
     }
     return render(request,'cuisine/search.html',data)
+
+
+
+def dish_details(request,id):
+    select_items=get_object_or_404(cookbook_dishes,pk=id)
+    cook_book=get_object_or_404(cookbook_dishes,pk=id)
+    count_like=cook_book.dish_like.count()
+    is_favourite=False
+    if cook_book.favourite.filter(id=request.user.id).exists():
+        is_favourite=True
+    
+    data={
+
+        'select_items' : select_items,
+        'is_favourite' : is_favourite,
+        'count_like'   :  count_like,
+    }
+    return render(request,'cuisine/dish_details.html',data)
+    
