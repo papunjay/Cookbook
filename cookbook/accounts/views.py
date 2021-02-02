@@ -25,6 +25,12 @@ def login(request):
 
 
 
+@login_required
+def logout_user(request):
+    logout(request)
+    return redirect('home')
+
+
 @csrf_protect
 def register(request):
     if request.method == "POST":
