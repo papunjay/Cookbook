@@ -38,7 +38,33 @@
         </form>
       </section>
 
+      <section class="container mt-3">
+        <h3 class="text-center">Your Favorite List</h3><br><br>
+        <div class="team slider" data-slick='{"slidesToShow": 3, "slidesToScroll": 1}'>
       
+          {% for food in all_dishes %}
+          <div class="card border-0 text-center  ml-3 mr-3">
+           
+              <img src="{{food.photo.url}}" class="card-img-top" alt="cookbook">
+      
+            <div class="card-body">
+              <h5 class="card-title">Cuisine:{{ food.type_of_cuisine}}</h5>
+              <p class="card-text">Cook-Time:{{food.cook_time}}hours</p>
+              <a href="#" class="btn btn-accent btn-block">{{food.dish_name}}</a>
+              <div class="text-center mt-2">
+                <button class="btn btn-accent"> <i class="far fa-heart fa-lg"></i> </button>  
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+      </section> 
+      <h2 class="text-center">All Dishes</h2>
+      <br> 
 
       </main>
     
